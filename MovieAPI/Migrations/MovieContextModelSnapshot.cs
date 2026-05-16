@@ -23,6 +23,9 @@ namespace MovieAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("AntalBiljetter")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("TEXT");
 
@@ -32,6 +35,9 @@ namespace MovieAPI.Migrations
                     b.Property<string>("SalongNamn")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("ShowtimeId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
@@ -65,6 +71,30 @@ namespace MovieAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Movies");
+                });
+
+            modelBuilder.Entity("MovieAPI.Models.Showtime", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SalongNamn")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Showtimes");
                 });
 
             modelBuilder.Entity("MovieAPI.Models.User", b =>

@@ -4,6 +4,7 @@
     ViewData["Title"] = "Admin - Översikt";
     var movies = ViewBag.Movies as List<CinemaWeb.Models.Movie>;
     var users = ViewBag.Users as List<CinemaWeb.Models.User>;
+    var showtimes = ViewBag.Showtimes as List<CinemaWeb.Models.Showtime>;
 }
 
 <div class="hero text-center">
@@ -13,26 +14,105 @@
 
 <div class="container">
     <div class="row g-4 mb-5">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card p-4 text-center">
                 <h2 style="color:#e30613">@(movies?.Count ?? 0)</h2>
                 <p class="card-text">Filmer</p>
                 <a asp-controller="Movie" asp-action="Index" class="btn btn-danger btn-sm">Hantera</a>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <div class="card p-4 text-center">
+                <h2 style="color:#e30613">@(showtimes?.Count ?? 0)</h2>
+                <p class="card-text">Visningstider</p>
+            </div>
+        </div>
+        <div class="col-md-3">
             <div class="card p-4 text-center">
                 <h2 style="color:#e30613">@(Model?.Count ?? 0)</h2>
                 <p class="card-text">Bokningar</p>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card p-4 text-center">
                 <h2 style="color:#e30613">@(users?.Count ?? 0)</h2>
                 <p class="card-text">Användare</p>
             </div>
         </div>
     </div>
+
+    <h2 class="section-title mb-4">Lägg till visningstid</h2>
+    <div class="card p-4 mb-5">
+        <form method="post" asp-controller="Admin" asp-action="CreateShowtime">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Film</label>
+                    <select name="movieId" class="form-control">
+                        @foreach (var movie in movies ?? new List<CinemaWeb.Models.Movie>())
+                        {
+                            <option value="@movie.Id">@movie.Title</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Salong</label>
+                    <select name="salongNamn" class="form-control">
+                        <option value="Salong 1">Salong 1 (Standard)</option>
+                        <option value="IMAX">IMAX</option>
+                        <option value="3D-salen">3D-salen</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Datum och tid</label>
+                    <input type="datetime-local" name="startTime" class="form-control" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Pris (kr)</label>
+                    <input type="number" name="price" class="form-control" placeholder="150" />
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                    <button type="submit" class="btn btn-danger w-100">+</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <h2 class="section-title mb-4">Visningstider</h2>
+    @if (showtimes == null || !showtimes.Any())
+    {
+        <p style="color:#aaa">Inga visningstider tillagda ännu.</p>
+    }
+    else
+    {
+        <table class="table mb-5">
+            <thead>
+                <tr>
+                    <th>Film</th>
+                    <th>Salong</th>
+                    <th>Tid</th>
+                    <th>Pris</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var showtime in showtimes)
+                {
+                    var movie = movies?.FirstOrDefault(m => m.Id == showtime.MovieId);
+                    <tr>
+                        <td>@(movie?.Title ?? "Okänd")</td>
+                        <td>@showtime.SalongNamn</td>
+                        <td>@showtime.StartTime.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@showtime.Price kr</td>
+                        <td>
+                            <a asp-controller="Admin" asp-action="DeleteShowtime" asp-route-id="@showtime.Id"
+                               class="btn btn-outline-danger btn-sm"
+                               onclick="return confirm('Ta bort visningstid?')">Ta bort</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 
     <h2 class="section-title mb-4">Alla bokningar</h2>
     @if (Model == null || !Model.Any())
@@ -41,14 +121,15 @@
     }
     else
     {
-        <table class="table">
+        <table class="table mb-5">
             <thead>
                 <tr>
-                    <th>Boknings-ID</th>
+                    <th>ID</th>
                     <th>Användare</th>
                     <th>Film</th>
                     <th>Salong</th>
-                    <th>Datum</th>
+                    <th>Tid</th>
+                    <th>Biljetter</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,19 +137,21 @@
                 {
                     var movie = movies?.FirstOrDefault(m => m.Id == booking.MovieId);
                     var user = users?.FirstOrDefault(u => u.Id == booking.UserId);
+                    var showtime = showtimes?.FirstOrDefault(s => s.Id == booking.ShowtimeId);
                     <tr>
                         <td>#@booking.Id</td>
                         <td>@(user?.Username ?? "Okänd")</td>
                         <td>@(movie?.Title ?? "Okänd")</td>
                         <td>@booking.SalongNamn</td>
-                        <td>@booking.BookingDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@(showtime?.StartTime.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
+                        <td>@booking.AntalBiljetter</td>
                     </tr>
                 }
             </tbody>
         </table>
     }
 
-    <h2 class="section-title mt-5 mb-4">Alla användare</h2>
+    <h2 class="section-title mb-4">Alla användare</h2>
     <table class="table">
         <thead>
             <tr>

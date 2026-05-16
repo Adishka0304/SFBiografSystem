@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Mina bokningar";
+    var movies = ViewBag.Movies as List<CinemaWeb.Models.Movie>;
+    var showtimes = ViewBag.Showtimes as List<CinemaWeb.Models.Showtime>;
 }
 
 <div class="hero text-center">
@@ -23,12 +25,18 @@
         <div class="row g-4">
             @foreach (var booking in Model)
             {
-                var movie = (ViewBag.Movies as List<CinemaWeb.Models.Movie>)?.FirstOrDefault(m => m.Id == booking.MovieId);
+                var movie = movies?.FirstOrDefault(m => m.Id == booking.MovieId);
+                var showtime = showtimes?.FirstOrDefault(s => s.Id == booking.ShowtimeId);
                 <div class="col-md-4">
                     <div class="card p-4">
                         <h5 class="card-title">🎬 @(movie?.Title ?? "Film")</h5>
                         <p class="card-text">🏟️ @booking.SalongNamn</p>
-                        <p class="card-text">📅 @booking.BookingDate.ToString("yyyy-MM-dd HH:mm")</p>
+                        <p class="card-text">📅 @(showtime?.StartTime.ToString("yyyy-MM-dd HH:mm") ?? booking.BookingDate.ToString("yyyy-MM-dd HH:mm"))</p>
+                        <p class="card-text">🎟️ @booking.AntalBiljetter biljett(er)</p>
+                        @if (showtime != null)
+                        {
+                            <p class="card-text">💰 @(showtime.Price * booking.AntalBiljetter) kr</p>
+                        }
                         <a asp-action="Delete" asp-route-id="@booking.Id" class="btn btn-outline-danger btn-sm mt-2"
                            onclick="return confirm('Avboka?')">Avboka</a>
                     </div>

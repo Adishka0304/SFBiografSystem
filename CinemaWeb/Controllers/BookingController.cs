@@ -23,28 +23,33 @@ public class BookingController : Controller
         if (userId == null) return RedirectToAction("Login", "Account");
         var bookings = await _http.GetFromJsonAsync<List<Booking>>($"{ApiUrl}/Booking/user/{userId}");
         var movies = await _http.GetFromJsonAsync<List<Movie>>($"{ApiUrl}/Movie");
+        var showtimes = await _http.GetFromJsonAsync<List<Showtime>>($"{ApiUrl}/Showtime");
         ViewBag.Movies = movies;
+        ViewBag.Showtimes = showtimes;
         return View(bookings);
     }
 
     public async Task<IActionResult> Create(int movieId)
     {
         var movie = await _http.GetFromJsonAsync<Movie>($"{ApiUrl}/Movie/{movieId}");
-        var salonger = await _http.GetFromJsonAsync<List<Salong>>("http://localhost:5105/api/Salong");
+        var showtimes = await _http.GetFromJsonAsync<List<Showtime>>($"{ApiUrl}/Showtime/movie/{movieId}");
         ViewBag.Movie = movie;
-        ViewBag.Salonger = salonger;
+        ViewBag.Showtimes = showtimes;
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(int movieId, string salongNamn)
+    public async Task<IActionResult> Create(int movieId, int showtimeId, int antalBiljetter)
     {
+        var showtime = await _http.GetFromJsonAsync<Showtime>($"{ApiUrl}/Showtime/{showtimeId}");
         var userId = HttpContext.Session.GetInt32("UserId");
         var booking = new Booking
         {
             UserId = userId ?? 0,
             MovieId = movieId,
-            SalongNamn = salongNamn,
+            ShowtimeId = showtimeId,
+            SalongNamn = showtime?.SalongNamn ?? "",
+            AntalBiljetter = antalBiljetter,
             BookingDate = DateTime.Now
         };
         await _http.PostAsJsonAsync($"{ApiUrl}/Booking", booking);

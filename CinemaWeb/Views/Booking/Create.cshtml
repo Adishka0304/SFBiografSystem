@@ -1,7 +1,7 @@
 @{
     ViewData["Title"] = "Boka film";
     var movie = ViewBag.Movie as CinemaWeb.Models.Movie;
-    var salonger = ViewBag.Salonger as List<CinemaWeb.Models.Salong>;
+    var showtimes = ViewBag.Showtimes as List<CinemaWeb.Models.Showtime>;
 }
 
 <div class="container" style="max-width: 500px; margin-top: 3rem;">
@@ -14,20 +14,42 @@
             <p style="color:#aaa">⏱ @movie?.DurationMinutes min</p>
         </div>
 
-        <form method="post" asp-action="Create" asp-route-movieId="@movie?.Id">
-            <div class="mb-3">
-                <label class="form-label">Välj salong</label>
-                <select name="salongNamn" class="form-control">
-                    @foreach (var salong in salonger ?? new List<CinemaWeb.Models.Salong>())
-                    {
-                        <option value="@salong.Namn">@salong.Namn (@salong.Typ - @salong.AntalPlatser platser)</option>
-                    }
-                </select>
+        @if (showtimes == null || !showtimes.Any())
+        {
+            <div class="alert alert-warning" style="background:#2a1a00; border-color:#e30613; color:#fff;">
+                Inga visningstider tillgängliga för denna film ännu.
             </div>
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-danger">Boka nu</button>
-                <a asp-controller="Movie" asp-action="Index" class="btn btn-outline-light">Avbryt</a>
-            </div>
-        </form>
+            <a asp-controller="Movie" asp-action="Index" class="btn btn-outline-light">Tillbaka</a>
+        }
+        else
+        {
+            <form method="post" asp-action="Create" asp-route-movieId="@movie?.Id">
+                <div class="mb-3">
+                    <label class="form-label">Välj visningstid</label>
+                    <select name="showtimeId" class="form-control">
+                        @foreach (var showtime in showtimes)
+                        {
+                            <option value="@showtime.Id">
+                                @showtime.StartTime.ToString("yyyy-MM-dd HH:mm") — @showtime.SalongNamn — @showtime.Price kr
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Antal biljetter</label>
+                    <select name="antalBiljetter" class="form-control">
+                        <option value="1">1 biljett</option>
+                        <option value="2">2 biljetter</option>
+                        <option value="3">3 biljetter</option>
+                        <option value="4">4 biljetter</option>
+                        <option value="5">5 biljetter</option>
+                    </select>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">Boka nu</button>
+                    <a asp-controller="Movie" asp-action="Index" class="btn btn-outline-light">Avbryt</a>
+                </div>
+            </form>
+        }
     </div>
-</div>
+</div>A
