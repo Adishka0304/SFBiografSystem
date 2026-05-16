@@ -12,6 +12,13 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Skapa databasen automatiskt
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+    db.Database.Migrate();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

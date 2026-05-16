@@ -9,13 +9,11 @@ namespace CinemaWeb.Controllers;
 public class AccountController : Controller
 {
     private readonly HttpClient _http;
-    private const string ApiUrl = "http://localhost:5024/api";
+    private const string ApiUrl = "https://sfmovieapi.azurewebsites.net/api";
 
     public AccountController(IHttpClientFactory factory)
     {
-        var handler = new HttpClientHandler();
-        handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-        _http = new HttpClient(handler);
+        _http = factory.CreateClient();
     }
 
     [HttpGet]

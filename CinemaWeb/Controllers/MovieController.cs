@@ -7,13 +7,11 @@ namespace CinemaWeb.Controllers;
 public class MovieController : Controller
 {
     private readonly HttpClient _http;
-    private const string MovieApiUrl = "http://localhost:5024/api/Movie";
+    private const string MovieApiUrl = "https://sfmovieapi.azurewebsites.net/api/Movie";
 
     public MovieController(IHttpClientFactory factory)
     {
-        var handler = new HttpClientHandler();
-        handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-        _http = new HttpClient(handler);
+        _http = factory.CreateClient();
     }
 
     public async Task<IActionResult> Index()

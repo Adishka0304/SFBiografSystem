@@ -8,13 +8,11 @@ namespace CinemaWeb.Controllers;
 public class BookingController : Controller
 {
     private readonly HttpClient _http;
-    private const string ApiUrl = "http://localhost:5024/api";
+    private const string ApiUrl = "https://sfmovieapi.azurewebsites.net/api";
 
     public BookingController(IHttpClientFactory factory)
     {
-        var handler = new HttpClientHandler();
-        handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-        _http = new HttpClient(handler);
+        _http = factory.CreateClient();
     }
 
     public async Task<IActionResult> Index()

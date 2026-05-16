@@ -10,11 +10,9 @@ public class SalongController : Controller
 
     public SalongController(IHttpClientFactory factory, IConfiguration config)
     {
-        var handler = new HttpClientHandler();
-        handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-        _http = new HttpClient(handler);
+        _http = factory.CreateClient();
         _http.DefaultRequestHeaders.Add("X-Api-Key", config["SalongApiKey"]);
-        _salongApiUrl = config["SalongApiUrl"] ?? "http://localhost:5105/api/Salong";
+        _salongApiUrl = config["SalongApiUrl"] ?? "https://sfsalongapi.azurewebsites.net/api/Salong";
     }
 
     public async Task<IActionResult> Index()
