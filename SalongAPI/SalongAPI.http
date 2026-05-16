@@ -1,0 +1,6 @@
+@SalongAPI_HostAddress = http://localhost:5105
+
+GET {{SalongAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

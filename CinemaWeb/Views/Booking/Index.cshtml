@@ -1,0 +1,39 @@
+@model List<CinemaWeb.Models.Booking>
+
+@{
+    ViewData["Title"] = "Mina bokningar";
+}
+
+<div class="hero text-center">
+    <h1>Mina bokningar</h1>
+    <p>Här ser du alla dina bokade filmer</p>
+</div>
+
+<div class="container">
+    @if (Model == null || !Model.Any())
+    {
+        <div class="text-center mt-5">
+            <h3>Du har inga bokningar ännu</h3>
+            <a asp-controller="Movie" asp-action="Index" class="btn btn-danger mt-3">Se filmer</a>
+        </div>
+    }
+    else
+    {
+        <h2 class="section-title mb-4">Dina bokningar</h2>
+        <div class="row g-4">
+            @foreach (var booking in Model)
+            {
+                var movie = (ViewBag.Movies as List<CinemaWeb.Models.Movie>)?.FirstOrDefault(m => m.Id == booking.MovieId);
+                <div class="col-md-4">
+                    <div class="card p-4">
+                        <h5 class="card-title">🎬 @(movie?.Title ?? "Film")</h5>
+                        <p class="card-text">🏟️ @booking.SalongNamn</p>
+                        <p class="card-text">📅 @booking.BookingDate.ToString("yyyy-MM-dd HH:mm")</p>
+                        <a asp-action="Delete" asp-route-id="@booking.Id" class="btn btn-outline-danger btn-sm mt-2"
+                           onclick="return confirm('Avboka?')">Avboka</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

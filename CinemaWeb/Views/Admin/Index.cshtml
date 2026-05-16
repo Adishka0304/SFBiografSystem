@@ -1,0 +1,91 @@
+@model List<CinemaWeb.Models.Booking>
+
+@{
+    ViewData["Title"] = "Admin - Översikt";
+    var movies = ViewBag.Movies as List<CinemaWeb.Models.Movie>;
+    var users = ViewBag.Users as List<CinemaWeb.Models.User>;
+}
+
+<div class="hero text-center">
+    <h1>⚙️ Admin-översikt</h1>
+    <p>Hantera systemet</p>
+</div>
+
+<div class="container">
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <h2 style="color:#e30613">@(movies?.Count ?? 0)</h2>
+                <p class="card-text">Filmer</p>
+                <a asp-controller="Movie" asp-action="Index" class="btn btn-danger btn-sm">Hantera</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <h2 style="color:#e30613">@(Model?.Count ?? 0)</h2>
+                <p class="card-text">Bokningar</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <h2 style="color:#e30613">@(users?.Count ?? 0)</h2>
+                <p class="card-text">Användare</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title mb-4">Alla bokningar</h2>
+    @if (Model == null || !Model.Any())
+    {
+        <p style="color:#aaa">Inga bokningar ännu.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Boknings-ID</th>
+                    <th>Användare</th>
+                    <th>Film</th>
+                    <th>Salong</th>
+                    <th>Datum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+                    var movie = movies?.FirstOrDefault(m => m.Id == booking.MovieId);
+                    var user = users?.FirstOrDefault(u => u.Id == booking.UserId);
+                    <tr>
+                        <td>#@booking.Id</td>
+                        <td>@(user?.Username ?? "Okänd")</td>
+                        <td>@(movie?.Title ?? "Okänd")</td>
+                        <td>@booking.SalongNamn</td>
+                        <td>@booking.BookingDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <h2 class="section-title mt-5 mb-4">Alla användare</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Användarnamn</th>
+                <th>E-post</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users ?? new List<CinemaWeb.Models.User>())
+            {
+                <tr>
+                    <td>#@user.Id</td>
+                    <td>@user.Username</td>
+                    <td>@user.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

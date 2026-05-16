@@ -1,0 +1,49 @@
+@model List<CinemaWeb.Models.Movie>
+
+@{
+    ViewData["Title"] = "Filmer";
+}
+
+<div class="hero text-center">
+    <h1>Aktuella filmer</h1>
+    <p>Välj din film och boka biljetter</p>
+</div>
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title">Nu på bio</h2>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Create" class="btn btn-danger">+ Lägg till film</a>
+        }
+    </div>
+
+    <div class="row g-4">
+        @foreach (var movie in Model)
+        {
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <span class="badge-genre">@movie.Genre</span>
+                        <h5 class="card-title mt-3">@movie.Title</h5>
+                        <p class="card-text">@movie.Description</p>
+                        <p class="card-text"><small>⏱ @movie.DurationMinutes min</small></p>
+                    </div>
+                    <div class="card-footer d-flex gap-2 flex-wrap" style="background-color:#111; border-top:1px solid #333;">
+                        <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-outline-light btn-sm">Info</a>
+                        @if (User.Identity != null && User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
+                        {
+                            <a asp-controller="Booking" asp-action="Create" asp-route-movieId="@movie.Id" class="btn btn-danger btn-sm">🎟️ Boka</a>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-outline-warning btn-sm">Redigera</a>
+                            <a asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-outline-danger btn-sm"
+                               onclick="return confirm('Ta bort @movie.Title?')">Ta bort</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

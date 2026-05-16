@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieAPI", "MovieAPI\MovieAPI.csproj", "{792B0140-7F81-4B0E-AC6B-83798D9963FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalongAPI", "SalongAPI\SalongAPI.csproj", "{1B3EE5D4-F7A3-4EA9-9C11-74FFC3BEC043}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaWeb", "CinemaWeb\CinemaWeb.csproj", "{721B1769-7D96-4084-ABC7-3C175AF2256A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{792B0140-7F81-4B0E-AC6B-83798D9963FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{792B0140-7F81-4B0E-AC6B-83798D9963FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{792B0140-7F81-4B0E-AC6B-83798D9963FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{792B0140-7F81-4B0E-AC6B-83798D9963FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B3EE5D4-F7A3-4EA9-9C11-74FFC3BEC043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B3EE5D4-F7A3-4EA9-9C11-74FFC3BEC043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B3EE5D4-F7A3-4EA9-9C11-74FFC3BEC043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B3EE5D4-F7A3-4EA9-9C11-74FFC3BEC043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{721B1769-7D96-4084-ABC7-3C175AF2256A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{721B1769-7D96-4084-ABC7-3C175AF2256A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{721B1769-7D96-4084-ABC7-3C175AF2256A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{721B1769-7D96-4084-ABC7-3C175AF2256A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "Boka film";
+    var movie = ViewBag.Movie as CinemaWeb.Models.Movie;
+    var salonger = ViewBag.Salonger as List<CinemaWeb.Models.Salong>;
+}
+
+<div class="container" style="max-width: 500px; margin-top: 3rem;">
+    <div class="card p-4">
+        <h2 class="mb-4">🎟️ Boka biljett</h2>
+
+        <div class="mb-4 p-3" style="background:#111; border-radius:8px;">
+            <span class="badge-genre">@movie?.Genre</span>
+            <h4 class="mt-2">@movie?.Title</h4>
+            <p style="color:#aaa">⏱ @movie?.DurationMinutes min</p>
+        </div>
+
+        <form method="post" asp-action="Create" asp-route-movieId="@movie?.Id">
+            <div class="mb-3">
+                <label class="form-label">Välj salong</label>
+                <select name="salongNamn" class="form-control">
+                    @foreach (var salong in salonger ?? new List<CinemaWeb.Models.Salong>())
+                    {
+                        <option value="@salong.Namn">@salong.Namn (@salong.Typ - @salong.AntalPlatser platser)</option>
+                    }
+                </select>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Boka nu</button>
+                <a asp-controller="Movie" asp-action="Index" class="btn btn-outline-light">Avbryt</a>
+            </div>
+        </form>
+    </div>
+</div>

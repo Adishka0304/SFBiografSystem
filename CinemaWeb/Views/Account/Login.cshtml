@@ -1,0 +1,31 @@
+@{
+    ViewData["Title"] = "Logga in";
+}
+
+<div class="container" style="max-width: 400px; margin-top: 5rem;">
+    <div class="card p-4">
+        <h2 class="text-center mb-4">🎬 Logga in</h2>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+        @if (ViewBag.Success != null)
+        {
+            <div class="alert alert-success">@ViewBag.Success</div>
+        }
+
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Användarnamn</label>
+                <input type="text" name="username" class="form-control" placeholder="admin" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Lösenord</label>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" />
+            </div>
+            <button type="submit" class="btn btn-danger w-100">Logga in</button>
+            <p class="text-center mt-3" style="color:#aaa">Inget konto? <a asp-action="Register">Skapa konto</a></p>
+        </form>
+    </div>
+</div>

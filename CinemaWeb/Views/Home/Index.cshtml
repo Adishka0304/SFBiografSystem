@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Hem";
+}
+
+<div class="hero text-center">
+    <h1>Upplev film på riktigt</h1>
+    <p>Boka dina biljetter enkelt och snabbt</p>
+    <a asp-controller="Movie" asp-action="Index" class="btn btn-danger btn-lg mt-3">Se alla filmer</a>
+    <a asp-controller="Salong" asp-action="Index" class="btn btn-outline-light btn-lg mt-3 ms-3">Våra salonger</a>
+</div>
+
+<div class="container">
+    <div class="row text-center mb-5">
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h3>🎬</h3>
+                <h5 class="card-title mt-2">Aktuella filmer</h5>
+                <p class="card-text">Se vårt utbud av de senaste filmerna</p>
+                <a asp-controller="Movie" asp-action="Index" class="btn btn-danger mt-2">Se filmer</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h3>🏟️</h3>
+                <h5 class="card-title mt-2">Våra salonger</h5>
+                <p class="card-text">IMAX, 3D och standard salonger</p>
+                <a asp-controller="Salong" asp-action="Index" class="btn btn-danger mt-2">Se salonger</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h3>🎟️</h3>
+                <h5 class="card-title mt-2">Administrera</h5>
+                <p class="card-text">Hantera filmutbud och bokningar</p>
+                <a asp-controller="Account" asp-action="Login" class="btn btn-danger mt-2">Logga in</a>
+            </div>
+        </div>
+    </div>
+</div>
